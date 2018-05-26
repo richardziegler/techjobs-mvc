@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Optional;
 
 /**
  * Created by LaunchCode
@@ -25,10 +26,23 @@ public class SearchController {
 
     // TODO #1 - Create handler to process search request and display results
 
-    @RequestMapping(value = "search/results")
+    @RequestMapping(value = "results")
     public String searchResults(Model model, @RequestParam String searchType, @RequestParam String searchTerm) {
-        model.addAttribute(searchTerm);
-        model.addAttribute(searchTerm);
+        model.addAttribute("columns", ListController.columnChoices);
+        int jobCounter = 0;
+
+        if (searchType.equals("all")) {
+            jobCounter = JobData.findByValue(searchTerm).size();
+            String jobCounterString = Integer.toString(jobCounter) + " Result(s)";
+            model.addAttribute("jobs", JobData.findByValue(searchTerm));
+            model.addAttribute("jobCounter", jobCounterString);
+        }
+        else {
+            jobCounter = JobData.findByColumnAndValue(searchType, searchTerm).size();
+            String jobCounterString = Integer.toString(jobCounter) + " Result(s)";
+            model.addAttribute("jobs", JobData.findByColumnAndValue(searchType, searchTerm));
+            model.addAttribute("jobCounter", jobCounterString);
+        }
 
         return "search";
     }
