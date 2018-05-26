@@ -40,10 +40,11 @@
 
     <h3 th:text="${jobCounter}?: '' "></h3>
 
-    <table th:fragment="all-jobs" class="job-listing" th:each="result : ${jobs}">
-        <tr th:each="cell : ${result}">
-            <td th:text="${#strings.capitalizeWords(cell.key)}"></td>
-            <td th:text="${cell.value}"></td>
+    <table th:fragment="all-jobs" class="job-listing" th:each="job : ${jobs}">
+        <tr th:each="jobProperty : ${job}">
+            <td th:text="${#strings.capitalizeWords(jobProperty.key)}"></td>
+            <td th:text="${jobProperty.value}"></td>
+
 
         </tr>
 
